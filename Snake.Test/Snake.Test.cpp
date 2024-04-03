@@ -236,8 +236,23 @@ namespace SnakeTest
 		TEST_METHOD(FoodCantAppearOnTail)
 		{
 			SnakeGame game;
+			game.player.setLocation(0, 19);
+			game.setDirection(Move::RIGHT);
+			game.setFood(1, 19);
+			game.player.setLength(380);
 
+			std::vector<point> tail;
+			for (int y = 19; y >= 0; y--) {
+				point p = { 0,y };
+				tail.push_back(p);
+			}
 
+			game.player.setTailSegments(tail);
+
+			game.advanceTurn();
+
+			point food = game.Food();
+			Assert::AreEqual(19, food.y);
 		}
 		
 

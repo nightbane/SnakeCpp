@@ -17,12 +17,14 @@ public:
 	Player(int, int, int, int, int);
 
 	point Head();
+	void setLocation(int, int);
 	point Direction();
 	void setDirection(point d);
 	int Length();
-	void setLocation(int, int);
+	void setLength(int l);
 
 	std::vector<point> TailSegments();
+	void setTailSegments(std::vector<point>);
 
 	void Step();
 	void AteFood();

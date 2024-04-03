@@ -36,6 +36,11 @@ int Player::Length()
 	return length;
 }
 
+void Player::setLength(int l)
+{
+	length = l;
+}
+
 void Player::setLocation(int x, int y)
 {
 	head = { x, y };
@@ -44,6 +49,11 @@ void Player::setLocation(int x, int y)
 std::vector<point> Player::TailSegments()
 {
 	return segments;
+}
+
+void Player::setTailSegments(std::vector<point> s)
+{
+	segments = s;
 }
 
 void Player::Step()
