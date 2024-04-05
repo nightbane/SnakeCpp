@@ -3,6 +3,7 @@
 #include <vector>
 #include <ctime>
 #include <chrono>
+#include "../Snake.Logic/SnakeGame.h"
 
 using namespace std;
 
@@ -12,14 +13,11 @@ using namespace std;
 #define key_RIGHT 77
 #define key_ESCAPE 27
 
-//This is a struct (aka structure) it reduces the number of variables needed.
-struct point { int x, y; };
-
 //keypress keeps track of what the last pressed key. It is global, but could be made local.
 int keypress = 0;
 
 void runGame();
-point keyPressed(point direction);
+Move keyPressed();
 void gotoxy(int x, int y);
 void setcolor(WORD color);
 void txtPlot(point item, unsigned char Color);
@@ -41,39 +39,39 @@ int main() {
 
 void runGame() {
 
+    SnakeGame game;
+
     chrono::time_point<chrono::system_clock> runTime;
     chrono::time_point<chrono::system_clock> currentTime;
     runTime = std::chrono::system_clock::now();
     Sleep(300);
 
-    point playerloc = { 0, 10 };
-    point direction = { 1, 0 };
-    int length = 5;
-
     //Loop to start drawing and playing.
-    //while (keypress != key_ESCAPE) {
+    while (keypress != key_ESCAPE) {
 
-    direction = keyPressed(direction);
+        Move direction = keyPressed();
+        game.setDirection(direction);
 
-    currentTime = chrono::system_clock::now();
+        currentTime = chrono::system_clock::now();
 
-    double elapsedTime = chrono::duration_cast<chrono::milliseconds>(currentTime - runTime).count();
-    if (elapsedTime > 0.3 * 1000) {
-        runTime = chrono::system_clock::now();
+        double elapsedTime = chrono::duration_cast<chrono::milliseconds>(currentTime - runTime).count();
+        if (elapsedTime > 0.3 * 1000) {
+            runTime = chrono::system_clock::now();
 
-        //Most of your game logic goes here.
+            //Most of your game logic goes here.
 
-        txtPlot(playerloc, 31);
+            txtPlot(game.player.Head(), 31);
 
-        setcolor(15);
-        gotoxy(1, 21);
-        _cprintf("Length: %i", length);
+            setcolor(15);
+            gotoxy(1, 21);
+            _cprintf("Length: %i", game.player.Length());
 
 
+
+        }
+
+        Sleep(300);
     }
-
-    Sleep(10);
-    //}
 }
 
 //Put function definitions here.
@@ -81,26 +79,27 @@ void runGame() {
 
 
 //These are helper funcitons to capture keyboard and draw to the console.
-point keyPressed(point direction) {
+Move keyPressed() {
+    Move direction = Move::DOWN;
     if (_kbhit())
     {
         keypress = _getch();
         switch (keypress)
         {
         case key_LEFT:
-            direction = { -1, 0 };
+            direction = Move::LEFT;
             break;
 
         case key_RIGHT:
-            direction = { 1, 0 };
+            direction = Move::RIGHT;
             break;
 
         case key_UP:
-            direction = { 0, -1 };
+            direction = Move::UP;
             break;
 
         case key_DOWN:
-            direction = { 0, 1 };
+            direction = Move::DOWN;
             break;
 
         default:
