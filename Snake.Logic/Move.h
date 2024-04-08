@@ -1,4 +1,4 @@
 #pragma once
 
-enum class Move { UP, DOWN, LEFT, RIGHT };
+enum class Move { NONE, UP, DOWN, LEFT, RIGHT };
 

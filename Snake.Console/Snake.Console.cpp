@@ -4,6 +4,7 @@
 #include <ctime>
 #include <chrono>
 #include "../Snake.Logic/SnakeGame.h"
+#include <iostream>
 
 using namespace std;
 
@@ -47,7 +48,7 @@ void runGame() {
     Sleep(300);
 
     //Loop to start drawing and playing.
-    while (keypress != key_ESCAPE) {
+    while (game.isRunning()) {
 
         Move direction = keyPressed();
         game.setDirection(direction);
@@ -57,10 +58,10 @@ void runGame() {
         double elapsedTime = chrono::duration_cast<chrono::milliseconds>(currentTime - runTime).count();
         if (elapsedTime > 0.3 * 1000) {
             runTime = chrono::system_clock::now();
-
-            //Most of your game logic goes here.
+            game.advanceTurn();
 
             txtPlot(game.player.Head(), 31);
+            txtPlot(game.Food(), 21);
 
             setcolor(15);
             gotoxy(1, 21);
@@ -70,7 +71,7 @@ void runGame() {
 
         }
 
-        Sleep(300);
+        Sleep(10);
     }
 }
 
@@ -80,7 +81,7 @@ void runGame() {
 
 //These are helper funcitons to capture keyboard and draw to the console.
 Move keyPressed() {
-    Move direction = Move::DOWN;
+    Move direction = Move::NONE;
     if (_kbhit())
     {
         keypress = _getch();
