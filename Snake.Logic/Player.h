@@ -11,6 +11,7 @@ private:
 	point lastDirection;
 	int length;
 	std::vector<point> segments;
+	point removed;
 
 public:
 	Player();
@@ -25,6 +26,7 @@ public:
 
 	std::vector<point> TailSegments();
 	void setTailSegments(std::vector<point>);
+	point TailRemoved();
 
 	void Step();
 	void AteFood();

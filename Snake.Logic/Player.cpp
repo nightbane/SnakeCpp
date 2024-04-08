@@ -6,6 +6,7 @@ Player::Player()
 	head = { 0, 10 };
 	direction = { 1, 0 };
 	length = 5;
+	removed = { -1, -1 };
 }
 
 Player::Player(int hx, int hy, int dx, int dy, int l)
@@ -13,6 +14,7 @@ Player::Player(int hx, int hy, int dx, int dy, int l)
 	head = { hx, hy };
 	direction = { dx, dy };
 	length = l;
+	removed = { -1, -1 };
 }
 
 point Player::Head()
@@ -56,10 +58,17 @@ void Player::setTailSegments(std::vector<point> s)
 	segments = s;
 }
 
+point Player::TailRemoved()
+{
+	return removed;
+}
+
 void Player::Step()
 {
+	removed = { -1, -1 };
 	segments.push_back(head);
 	if (segments.size() > length) {
+		removed = segments[0];
 		segments.erase(segments.begin() + 0);
 	}
 	lastDirection = direction;

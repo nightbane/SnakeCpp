@@ -48,7 +48,8 @@ void SnakeGame::advanceTurn()
     }
     
     point head = player.Head();
-    if (head.x > SnakeGame::SIZE || head.x < 0) {
+    if (head.x > SnakeGame::SIZE || head.x < 0 ||
+        head.y > SnakeGame::SIZE || head.y < 0) {
         running = false;
         return;
     }

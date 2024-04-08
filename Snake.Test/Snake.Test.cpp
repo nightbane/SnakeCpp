@@ -104,6 +104,19 @@ namespace SnakeTest
 			Assert::AreNotEqual(expectedSegment, t[0]);
 		}
 
+		TEST_METHOD(TailOldestSegmentIndcatedForWipe)
+		{
+			SnakeGame game;
+			point expectedSegment = game.player.Head();
+
+			for (int i = 0; i < 6; i++) {
+				game.advanceTurn();
+			}
+
+			point t = game.player.TailRemoved();
+			Assert::AreEqual(expectedSegment, t);
+		}
+
 		TEST_METHOD(SnakeGrowsWhenItEats)
 		{
 			SnakeGame game;
@@ -165,6 +178,17 @@ namespace SnakeTest
 			SnakeGame game;
 			game.player.setLocation(0, 10);
 			game.setDirection(Move::LEFT);
+
+			game.advanceTurn();
+
+			Assert::IsFalse(game.isRunning());
+		}
+
+		TEST_METHOD(DiesWhenLeaveBoardDown)
+		{
+			SnakeGame game;
+			game.player.setLocation(10, 19);
+			game.setDirection(Move::DOWN);
 
 			game.advanceTurn();
 
@@ -242,9 +266,21 @@ namespace SnakeTest
 			game.player.setLength(380);
 
 			std::vector<point> tail;
-			for (int y = 19; y >= 0; y--) {
-				point p = { 0,y };
-				tail.push_back(p);
+			for (int y = 18; y >= 0; y--) {
+				if (y % 2 == 1) {
+					for (int x1 = 0; x1 < 20;x1++) {
+						point p = { x1,y };
+						tail.push_back(p);
+					}
+				}
+				else
+				{
+					for (int x2 = 19; x2 >= 0;x2--) {
+						point p = { x2,y };
+						tail.push_back(p);
+					}
+				}
+
 			}
 
 			game.player.setTailSegments(tail);
@@ -252,6 +288,7 @@ namespace SnakeTest
 			game.advanceTurn();
 
 			point food = game.Food();
+			Assert::AreEqual(381, game.player.Length());
 			Assert::AreEqual(19, food.y);
 		}
 		

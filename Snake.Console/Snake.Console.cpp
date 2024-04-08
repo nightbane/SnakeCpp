@@ -29,10 +29,12 @@ void txtPlot(point item, unsigned char Color);
 int main() {
 
     //Uncomment the next four lines to see console color options 0-255
-    //for (int i = 0; i < 255; i++) {
-    //    setcolor(i);
-    //    _cprintf("Color option: %i. Hello, world.\n", i);
-    //}
+    /*
+    for (int i = 0; i < 255; i++) {
+        setcolor(i);
+        _cprintf("Color option: %i. Hello, world.\n", i);
+    }
+    //*/
 
     runGame();
     return 0;
@@ -61,7 +63,11 @@ void runGame() {
             game.advanceTurn();
 
             txtPlot(game.player.Head(), 31);
-            txtPlot(game.Food(), 21);
+            point removed = game.player.TailRemoved();
+            if (removed != point( - 1, -1 )) {
+                txtPlot(removed, 15);
+            }
+            txtPlot(game.Food(), 100);
 
             setcolor(15);
             gotoxy(1, 21);
