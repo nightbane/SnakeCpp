@@ -24,6 +24,7 @@ void setcolor(WORD color);
 void txtPlot(point item, unsigned char Color);
 
 //Add function declarations here
+void drawBorder();
 
 
 int main() {
@@ -43,6 +44,8 @@ int main() {
 void runGame() {
 
     SnakeGame game;
+
+    drawBorder();
 
     chrono::time_point<chrono::system_clock> runTime;
     chrono::time_point<chrono::system_clock> currentTime;
@@ -70,7 +73,7 @@ void runGame() {
             txtPlot(game.Food(), 100);
 
             setcolor(15);
-            gotoxy(1, 21);
+            gotoxy(1, 22);
             _cprintf("Length: %i", game.player.Length());
 
 
@@ -120,8 +123,18 @@ Move keyPressed() {
 void txtPlot(point item, unsigned char Color)
 {
     setcolor(Color);
-    gotoxy(item.x * 2, item.y);
+    gotoxy(item.x * 2 + 1, item.y + 1);
     _cprintf("  ");
+}
+
+void drawBorder()
+{
+    cout << "+----------------------------------------+" << endl;
+    for (int i = 0; i < 20;i++) {
+        cout << "|                                        |" << endl;
+    }
+    cout << "+----------------------------------------+" << endl;
+
 }
 
 void gotoxy(int x, int y)
